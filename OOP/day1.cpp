@@ -1,22 +1,53 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
+
+class Grade{
+    private:
+    string grade;
+    public:
+    Grade(int marks)
+    {
+        if (marks>90)
+        {
+            grade = "A";
+        }
+        else if (marks > 80)
+        {
+            grade = "B";
+        }
+        else{
+            grade="F";
+        }
+    }
+    string getGrade()
+    {
+        return grade;
+    }
+};
 class Student{
 private:
-    string grade;
+    Grade* grade;
     string name;
     string rollno;
 public:
-    Student(string g,string n,string roll)
+    Student(int M,string n,string roll) 
     {
-        grade = g;
+        grade = new Grade(M);
         name = n;
         rollno = roll;
 
     }
+    Student(string n,string roll,int M)
+    {
+        name = n;
+        rollno = roll;
+        grade = new Grade(M);
+    }
     Student()
     {
-        grade = "";
+        grade = new Grade(0);
         name = "";
         rollno = "";
     }
@@ -30,12 +61,12 @@ public:
     }
     string getGrade()
     {
-        return grade;
+        return grade->getGrade();
     }
-    void setGrade(string g)
-    {
-        grade = g;
-    }
+    // void setGrade(string g)
+    // {
+    //     grade = g;
+    // }
     void setName(string n)
     {
         name =n;
@@ -48,20 +79,23 @@ public:
     {
         cout<<"Name:"<<name<<endl;
         cout<<"Rollno"<<rollno<<endl;
-        cout<<"Grade:"<<grade<<endl;
+        cout<<"Grade:"<<grade->getGrade()<<endl;
+    }
+    ~Student()
+    {
+        delete grade;
     }
 };
 
+
+
 int main()
 {
-    // string name= "Abdullah";
-    // string rollno="123";
-    // string grade = "A+";
-    // string name2 = "Awais";
-    // string rollno2="235";
-    // string grade2 = "A+";
-    Student s1("A+","Abdullah","123");
-    Student s2("A+","Awais","235");
+    Student s1(90,"Abdullah","123");
+    Student s2(81,"Awais","235");
     s1.print();
     s2.print();
+    Student* s3 = new Student(81,"Awais","235");
+    Student* s4 = new Student();
+    delete s3;
 }
