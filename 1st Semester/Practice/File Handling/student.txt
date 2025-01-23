@@ -1,0 +1,5 @@
+Hello, I am writng data of students in file
+Name  :  Awais Iftikhar    ,  Age : 19
+Name  :  Abid Kazmi        ,  Age : 20
+Name  :  Saad Ismail    ,  Age : 19
+Name  :  Muhammad Ahmad        ,  Age : 20
