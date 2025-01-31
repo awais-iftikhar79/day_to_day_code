@@ -50,6 +50,7 @@ void print(Items *item)
     else
     {
         cout << "Data (float) : " << item->data.floating_point << endl;
+        cout<<"Test commit"<<endl;
     }
     cout << "---------------------" << endl
          << endl;
