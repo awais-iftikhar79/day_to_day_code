@@ -19,10 +19,10 @@ int main()
     cout << "Enter Author Name" << endl;
     getline(cin, newbook.author);
     cout << "Enter year of publication" << endl;
-    cin.ignore();
     cin >> newbook.year;
     cout << "Enter price of book" << endl;
     cin >> newbook.price;
+    cin.ignore();
 
     cout << "Title : " << newbook.title << endl;
     cout << "Author Name : " << newbook.author << endl;

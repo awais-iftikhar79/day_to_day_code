@@ -19,7 +19,6 @@ int main()
     {
 
         cout << "Enter name of student of " << i + 1 << endl;
-        
         getline(cin, stu[i].name);
         cout << "Enter Roll number of student " << i + 1 << endl;
         cin >> stu[i].roll_no;
