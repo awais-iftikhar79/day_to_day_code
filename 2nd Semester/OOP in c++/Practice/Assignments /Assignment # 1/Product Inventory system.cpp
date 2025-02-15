@@ -12,7 +12,7 @@ struct Product
     string product_catagory;
     float product_price;
     int product_quantity;
-    float discout;
+    float discount;
     float revenue_generated;
 };
 
@@ -77,6 +77,14 @@ void cal_stock_value(Product product[], int product_num)
 }
 #endif
 
+void add_discount(Product product[], int product_num, float discount)
+{
+    for (int i = 0; i < product_num; i++)
+    {
+        product[i].product_price = product[i].product_price * (1 - (discount / 100));
+    }
+}
+
 void display()
 {
     cout << "\nProduct Inventory Management System \n"
@@ -116,6 +124,10 @@ int main()
 
             break;
         case 4:
+            float discount;
+            cout << "Enter percentage of discount \n";
+            cin >> discount;
+            add_discount(products, product_count, discount);
 
             break;
         case 5:
