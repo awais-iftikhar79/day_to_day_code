@@ -4,6 +4,7 @@ using namespace std;
 
 #define MAX 10
 #define CAL_STOCK_VALUE
+#define ENABLE_DISCOUNT
 
 struct Product
 {
@@ -37,6 +38,7 @@ void add_product(Product product[], int &product_num)
     cin >> new_product.product_quantity;
 
     new_product.revenue_generated = 0;
+    new_product.discount = 0;
 
     product[product_num] = new_product;
     product_num++;
@@ -72,25 +74,53 @@ void cal_stock_value(Product product[], int product_num)
     for (int i = 0; i < product_num; i++)
     {
         total_value += product[i].product_price * product[i].product_quantity;
+        cout << "Product name : " << product[i].product_name << endl;
+        cout << "Quantity : " << product[i].product_quantity << endl;
+        cout << "Total stock value : $" << total_value << endl;
+        cout << "---------------" << endl;
+        total_value = 0;
     }
-    cout << "Total Value of all Product is : $" << total_value << endl;
 }
 #endif
 
-void add_discount(Product product[], int product_num, float discount)
+#ifdef ENABLE_DISCOUNT
+void add_discount(Product product[], int product_num, int ID)
 {
+
     for (int i = 0; i < product_num; i++)
     {
-        product[i].product_price = product[i].product_price * (1 - (discount / 100));
+        if (ID == product[i].product_ID)
+        {
+            if (product[i].discount > 0)
+            {
+                cout << "Already discount is applied !" << endl;
+                return;
+            }
+            cout << "Enter discount in % : " << endl;
+            cin >> product[i].discount;
+            if (product[i].discount < 0 || product[i].discount > 100)
+            {
+                cout << "Invalid Discount " << endl;
+                return;
+            }
+            cout << "Original Price is : $" << product[i].product_price << endl;
+            product[i].product_price = product[i].product_price * (1 - (product[i].discount / 100));
+            cout << "After discount Price is : $" << product[i].product_price << endl;
+        }
+        else
+        {
+            cout << "Product of ID " << ID << " not found !" << endl;
+        }
     }
 }
+#endif
 
 void display()
 {
     cout << "\nProduct Inventory Management System \n"
          << "1.Add New Product\n"
          << "2.Display Product Details\n"
-         << "3.Calculate Total  Stock Value\n"
+         << "3.Calculate Total  Stock Value of Each Product\n"
          << "4.Add Discount\n"
          << "5.Generate Sale Report\n"
          << "6.Exit\n";
@@ -124,11 +154,11 @@ int main()
 
             break;
         case 4:
-            float discount;
-            cout << "Enter percentage of discount \n";
-            cin >> discount;
-            add_discount(products, product_count, discount);
-
+#ifdef ENABLE_DISCOUNT
+            cout << "Enter product ID " << endl;
+            cin >> product_ID;
+            add_discount(products, product_count, product_ID);
+#endif
             break;
         case 5:
 
