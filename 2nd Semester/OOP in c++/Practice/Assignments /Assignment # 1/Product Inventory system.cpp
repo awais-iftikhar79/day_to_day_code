@@ -5,6 +5,7 @@ using namespace std;
 #define MAX 10
 #define CAL_STOCK_VALUE
 #define ENABLE_DISCOUNT
+#define GENERATE_SALES_REPORT
 
 struct Product
 {
@@ -114,6 +115,15 @@ void add_discount(Product product[], int product_num, int ID)
     }
 }
 #endif
+void sale_report(Product product[], int product_num)
+{
+    double revenue_generated = 0;
+    for (int i = 0; i < product_num; i++)
+    {
+        revenue_generated += product[i].product_price * product[i].product_quantity;
+    }
+    cout << "Toal Revenue Generated is : $" << revenue_generated << endl;
+}
 
 void display()
 {
@@ -161,8 +171,10 @@ int main()
 #endif
             break;
         case 5:
-
+#ifdef GENERATE_SALES_REPORT
+            sale_report(products, product_count);
             break;
+#endif
         case 6:
             exit(0);
             break;
