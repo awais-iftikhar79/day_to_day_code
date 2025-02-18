@@ -87,7 +87,7 @@ void cal_stock_value(Product product[], int product_num)
 #ifdef ENABLE_DISCOUNT
 void add_discount(Product product[], int product_num, int ID)
 {
-
+    bool found=false;
     for (int i = 0; i < product_num; i++)
     {
         if (ID == product[i].product_ID)
@@ -107,13 +107,14 @@ void add_discount(Product product[], int product_num, int ID)
             cout << "Original Price is : $" << product[i].product_price << endl;
             product[i].product_price = product[i].product_price * (1 - (product[i].discount / 100));
             cout << "After discount Price is : $" << product[i].product_price << endl;
-        }
-        else
-        {
-            cout << "Product of ID " << ID << " not found !" << endl;
-        }
+            found=true;
+        }   
+    }
+    if(!found){
+        cout<<"Product of ID " << ID << " not found !" << endl;
     }
 }
+
 #endif
 void sale_report(Product product[], int product_num)
 {
@@ -122,7 +123,7 @@ void sale_report(Product product[], int product_num)
     {
         revenue_generated += product[i].product_price * product[i].product_quantity;
     }
-    cout << "Toal Revenue Generated is : $" << revenue_generated << endl;
+    cout << "Total Revenue Generated is : $" << revenue_generated << endl;
 }
 
 void display()
