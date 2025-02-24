@@ -8,9 +8,9 @@ private:
     string name;
     int age;
 public:
-    student(){}
-    student(string , int);
-    student(student& s){
+    student(){}  //default constructor
+    student(string , int);  //perameterized constructor
+    student(student& s){   //copy construtor
         name=s.name;
         age=s.age;
     };
