@@ -1,5 +1,5 @@
 def unique_list(my_list):
-    print("Actula list is : ",my_list)
+    print("Actual list is : ",my_list)
     unique=list(set(my_list))
     return unique 
 
