@@ -31,7 +31,7 @@ int main()
     employee emp[3];
     for (int i = 0; i < 3; i++)
     {
-        cout << "Enter details of first employee" << endl;
+        cout << "Enter details of " << i + 1 << " employee" << endl;
         emp[i].set_details();
     }
     for (int i = 0; i < 3; i++)

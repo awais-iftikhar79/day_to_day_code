@@ -4,10 +4,11 @@ using namespace std;
 class car
 {
 private:
-public:
     string brand;
     int modle;
     float price;
+
+public:
     void enter();
     void display();
 };
@@ -33,7 +34,7 @@ int main()
     c1.enter();
     c2.enter();
     c1.display();
-    cout<<"------------"<<endl;
+    cout << "------------" << endl;
     c2.display();
     return 0;
 }
