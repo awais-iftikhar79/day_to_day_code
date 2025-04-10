@@ -25,6 +25,14 @@ int main()
 {
     Pair<int> p(3, 6);
     p.display();
-    p.swap();  
+    cout << "After swaping :" << endl;
+    p.swap();
+    p.display();
+    
+    Pair<string> p2("Awais ", "Iftikhar");
+    p2.display();
+    p2.swap();
+    cout << "After swaping : " << endl;
+    p2.display();
     return 0;
 }
