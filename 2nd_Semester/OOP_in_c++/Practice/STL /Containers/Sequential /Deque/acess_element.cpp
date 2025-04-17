@@ -18,7 +18,7 @@ int main()
     deque<int> d;
     size_t n, index;
     int val;
-
+    
     cout << "Enter size of Deque " << endl;
     cin >> n;
 
@@ -37,7 +37,7 @@ int main()
     cout << "Element at index " << index << " is : " << d.at(index) << endl;
     cout << "Element at front : " << d.front() << endl;
     cout << "Element at back : " << d.back() << endl;
-    
+
     display(d);
     return 0;
 }
