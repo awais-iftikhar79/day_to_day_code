@@ -1,0 +1,8 @@
+Student Name : Awais Iftikha
+Student ID : 2024124
+Student GPA : 3.1
+
+Student Name : Abid kazmi
+Student ID : 2024603
+Student GPA : 2.6
+
