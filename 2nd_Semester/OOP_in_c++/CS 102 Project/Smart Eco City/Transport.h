@@ -36,4 +36,10 @@ public:
     }
 };
 
+void transport_menu()
+{
+    cout << "1.Electric Vehicle" << endl
+         << "2.Non-Electric Vehicle" << endl;
+}
+
 #endif

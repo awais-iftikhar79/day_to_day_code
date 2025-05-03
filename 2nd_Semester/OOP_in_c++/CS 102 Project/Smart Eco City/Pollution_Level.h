@@ -14,7 +14,7 @@ private:
 public:
     void update_pollution(string type)
     {
-        if (type == "Coal" || type == "Non_Electric Vehilce")
+        if (type == "Coal" || type == "Non-Electric Vehilce")
         {
             air_pollution += 10;
         }

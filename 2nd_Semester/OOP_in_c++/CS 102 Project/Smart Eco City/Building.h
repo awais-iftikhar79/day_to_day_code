@@ -40,4 +40,11 @@ public:
     }
 };
 
+void building_menu()
+{
+    cout << "1.Residential" << endl
+         << "2.Commercial" << endl
+         << "3.Green Space" << endl;
+}
+
 #endif

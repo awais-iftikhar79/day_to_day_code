@@ -42,4 +42,11 @@ public:
     }
 };
 
+void utility_menu()
+{
+    cout << "1.Solar" << endl
+         << "2.Wind" << endl
+         << "3.Coal" << endl;
+}
+
 #endif

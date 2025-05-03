@@ -36,4 +36,9 @@ public:
     }
 };
 
-#endif 
+void eco_activity_menu()
+{
+    cout << "1.Tree Planting" << endl
+         << "2.Reccling" << endl;
+}
+#endif

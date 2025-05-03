@@ -32,7 +32,7 @@ public:
         else if (transport_mode == 3)
         {
             impact -= 10;
-            typ_str = "Non_Electric Vehicle";
+            typ_str = "Non-Electric Vehicle";
         }
         if (recylce)
         {
@@ -50,5 +50,18 @@ public:
              << " Recylce " << (recylce ? "Yes" : "No") << endl;
     }
 };
+
+void citizen_transport_mode()
+{
+    cout << "1.Electric Vehicle" << endl
+         << "2.Bicycle" << endl
+         << "3.Non-Electric Vehicle" << endl;
+}
+
+void citizen_recycle_menu()
+{
+    cout << "0.No" << endl
+         << "!.Yes" << endl;
+}
 
 #endif
