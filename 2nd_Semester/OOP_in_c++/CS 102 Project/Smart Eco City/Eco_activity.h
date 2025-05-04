@@ -28,11 +28,7 @@ public:
             typ_str = "Recycling";
             cout << "Eco Activity " << typ_str << " increases Eco points" << endl;
         }
-        else
-        {
-            cout << "PLease Enter correct option" << endl;
-            return;
-        }
+       
     }
 };
 

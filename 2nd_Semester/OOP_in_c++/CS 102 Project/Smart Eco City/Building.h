@@ -32,11 +32,7 @@ public:
             typ_str = "Green Space";
             cout << "Building " << name << " is a residential building that increases  Eco points " << endl;
         }
-        else
-        {
-            cout << "Please Enter correct type " << endl;
-            return;
-        }
+        
     }
 };
 

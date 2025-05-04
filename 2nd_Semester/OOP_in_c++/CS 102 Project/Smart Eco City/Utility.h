@@ -34,11 +34,7 @@ public:
             typ_str = "Coal";
             cout << "Utility " << name << " is a Coal plant which Decreases Eco points" << endl;
         }
-        else
-        {
-            cout << "Please Enter correct option " << endl;
-            return;
-        }
+       
     }
 };
 

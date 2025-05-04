@@ -28,11 +28,7 @@ public:
             typ_str = "Non-Electric Vehicle";
             cout << "Transport " << name << " is an Non-Electric Vehicle that Decreases Eco points" << endl;
         }
-        else
-        {
-            cout << "Please Enter correct type " << endl;
-            return;
-        }
+        
     }
 };
 

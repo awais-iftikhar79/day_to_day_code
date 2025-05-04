@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 using namespace std;
 
 #include "City_Simulator.h"
@@ -24,11 +25,34 @@ int main()
 
     while (true)
     {
-        cout << "====== WELCOME TO SMART CITY SIMULATOR ======" << endl;
-        main_menu();
-        cout << "Please Enter your choice (1-8)" << endl;
-        cin >> choice;
-        cin.ignore();
+        while (true)
+        {
+            try
+            {
+                cout << "====== WELCOME TO SMART CITY SIMULATOR ======" << endl;
+                main_menu();
+                cout << "Please Enter your choice (1-8)" << endl;
+                cin >> choice;
+                cin.ignore();
+
+                if (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore(100, '\n');
+                    throw invalid_argument("Invalid Input !. Please Enter a number ");
+                }
+
+                if (choice < 1 || choice > 8)
+                {
+                    throw out_of_range("Invalid Input !. Please Enter number in range (1-8)");
+                }
+                break;
+            }
+            catch (const exception &e)
+            {
+                cout << "Error : " << e.what() << endl;
+            }
+        }
 
         switch (choice)
         {
@@ -36,10 +60,37 @@ int main()
         {
             cout << "Enter Building name " << endl;
             getline(cin, name);
-            building_menu();
-            cout << "Enter your choice (1-3)" << endl;
-            cin >> type;
-            cin.ignore();
+
+            while (true)
+            {
+                try
+                {
+                    building_menu();
+                    cout << "Enter your choice (1-3)" << endl;
+                    cin >> type;
+                    cin.ignore();
+
+                    if (cin.fail())
+                    {
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        throw invalid_argument("Invalid Input !. Please Enter a number ");
+                    }
+
+                    if (type < 1 || type > 3)
+                    {
+                        throw out_of_range("Invalid Input !. Building must be in range (1-3)");
+                    }
+
+                    break;
+                }
+
+                catch (const exception &e)
+                {
+                    cout << "Error : " << e.what() << endl;
+                }
+            }
+
             simulator.add_building(name, type);
         }
         break;

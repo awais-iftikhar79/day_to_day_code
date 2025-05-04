@@ -61,7 +61,7 @@ void citizen_transport_mode()
 void citizen_recycle_menu()
 {
     cout << "0.No" << endl
-         << "!.Yes" << endl;
+         << "1.Yes" << endl;
 }
 
 #endif
