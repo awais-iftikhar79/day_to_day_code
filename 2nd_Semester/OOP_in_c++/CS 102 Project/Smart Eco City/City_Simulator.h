@@ -42,7 +42,7 @@ public:
             typ_str = "Green Space";
         }
         pollution.update_pollution(typ_str);
-        cout << "\033[1;32m[+] Building " << name << " added successfuly !\033[0m" << endl;
+        cout << "\033[1;32m[+] Building " << name << " added successfuly !\033[0m" << endl; // Green
     }
 
     void add_transport(string name, int type)
@@ -61,7 +61,7 @@ public:
         }
 
         pollution.update_pollution(typ_str);
-        cout << "\033[1;32m[+] Transport " << name << " added successfuly !\033[0m" << endl;
+        cout << "\033[1;32m[+] Transport " << name << " added successfuly !\033[0m" << endl; // Green
     }
 
     void add_utility(string name, int type)
