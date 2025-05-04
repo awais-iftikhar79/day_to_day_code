@@ -28,14 +28,13 @@ public:
             typ_str = "Non-Electric Vehicle";
             cout << "Transport " << name << " is an Non-Electric Vehicle that Decreases Eco points" << endl;
         }
-        
-    }
+        }
 };
 
 void transport_menu()
 {
-    cout << "1.Electric Vehicle" << endl
-         << "2.Non-Electric Vehicle" << endl;
+    cout << "\t1.Electric Vehicle" << endl
+         << "\t2.Non-Electric Vehicle" << endl;
 }
 
 #endif

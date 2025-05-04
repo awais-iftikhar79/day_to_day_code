@@ -42,7 +42,7 @@ public:
             typ_str = "Green Space";
         }
         pollution.update_pollution(typ_str);
-        cout << "[+] Building " << name << " added successfuly !" << endl;
+        cout << "\033[1;32m[+] Building " << name << " added successfuly !\033[0m" << endl;
     }
 
     void add_transport(string name, int type)
@@ -61,7 +61,7 @@ public:
         }
 
         pollution.update_pollution(typ_str);
-        cout << "[+] Transport " << name << " added successfuly !" << endl;
+        cout << "\033[1;32m[+] Transport " << name << " added successfuly !\033[0m" << endl;
     }
 
     void add_utility(string name, int type)
@@ -85,7 +85,7 @@ public:
             typ_str = "Coal";
         }
         pollution.update_pollution(typ_str);
-        cout << "[+] Utility " << name << " added successfuly !" << endl;
+        cout << "\033[1;32m[+] Utility " << name << " added successfuly !\033[0m" << endl;
     }
 
     void add_eco_activity(string name, int type)
@@ -104,7 +104,7 @@ public:
             typ_str = "Recycling";
         }
         pollution.update_pollution(typ_str);
-        cout << "[+] Eco Activity " << name << " added successfuly !" << endl;
+        cout << "\033[1;32m[+] Eco Activity " << name << " added successfuly !\033[0m" << endl;
     }
 
     void add_citizen(string name, int transport_mode, bool recycle)
@@ -129,7 +129,7 @@ public:
 
         pollution.update_pollution(typ_str);
 
-        cout << "[+] Citizen " << name << " added successfuly !" << endl;
+        cout << "\033[1;32m[+] Citizen " << name << " added successfuly !\033[0m" << endl;
     }
 
     void show_eco_points()
@@ -165,4 +165,4 @@ public:
     }
 };
 
-#endif  
+#endif

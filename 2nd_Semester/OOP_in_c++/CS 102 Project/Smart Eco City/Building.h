@@ -32,15 +32,14 @@ public:
             typ_str = "Green Space";
             cout << "Building " << name << " is a residential building that increases  Eco points " << endl;
         }
-        
-    }
+        }
 };
 
 void building_menu()
 {
-    cout << "1.Residential" << endl
-         << "2.Commercial" << endl
-         << "3.Green Space" << endl;
+    cout << "\t1.Residential" << endl
+         << "\t2.Commercial" << endl
+         << "\t3.Green Space" << endl;
 }
 
 #endif

@@ -28,13 +28,12 @@ public:
             typ_str = "Recycling";
             cout << "Eco Activity " << typ_str << " increases Eco points" << endl;
         }
-       
-    }
+        }
 };
 
 void eco_activity_menu()
 {
-    cout << "1.Tree Planting" << endl
-         << "2.Reccling" << endl;
+    cout << "\t1.Tree Planting" << endl
+         << "\t2.Reccling" << endl;
 }
 #endif

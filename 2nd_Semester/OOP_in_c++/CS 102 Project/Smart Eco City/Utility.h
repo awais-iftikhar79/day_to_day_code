@@ -34,15 +34,14 @@ public:
             typ_str = "Coal";
             cout << "Utility " << name << " is a Coal plant which Decreases Eco points" << endl;
         }
-       
-    }
+        }
 };
 
 void utility_menu()
 {
-    cout << "1.Solar" << endl
-         << "2.Wind" << endl
-         << "3.Coal" << endl;
+    cout << "\t1.Solar" << endl
+         << "\t2.Wind" << endl
+         << "\t3.Coal" << endl;
 }
 
 #endif

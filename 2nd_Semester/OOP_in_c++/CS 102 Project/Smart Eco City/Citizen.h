@@ -53,15 +53,15 @@ public:
 
 void citizen_transport_mode()
 {
-    cout << "1.Electric Vehicle" << endl
-         << "2.Bicycle" << endl
-         << "3.Non-Electric Vehicle" << endl;
+    cout << "\t1.Electric Vehicle" << endl
+         << "\t2.Bicycle" << endl
+         << "\t3.Non-Electric Vehicle" << endl;
 }
 
 void citizen_recycle_menu()
 {
-    cout << "0.No" << endl
-         << "1.Yes" << endl;
+    cout << "\t0.No" << endl
+         << "\t1.Yes" << endl;
 }
 
 #endif
