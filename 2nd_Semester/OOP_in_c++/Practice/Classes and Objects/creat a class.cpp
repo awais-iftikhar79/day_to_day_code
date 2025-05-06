@@ -5,10 +5,11 @@ using namespace std;
 class student
 {
 private:
-public:
     string name;
     int age;
     char grade;
+
+public:
     void enter()
     {
         cout << "Enter student name " << endl;
