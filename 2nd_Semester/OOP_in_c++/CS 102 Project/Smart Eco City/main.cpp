@@ -29,7 +29,7 @@ int main()
         {
             try
             {
-                cout << "\033[1;33m====== WELCOME TO SMART CITY SIMULATOR ======\033[0m" << endl; // Bright Yellow
+                cout << "\033[1;33m ====== WELCOME TO SMART CITY SIMULATOR ======\033[0m" << endl; // Bright Yellow
                 main_menu();
                 cout << "\033[0;37mPlease Enter your choice (1-8)\033[0m" << endl; // white
                 cin >> choice;
@@ -171,6 +171,39 @@ int main()
         break;
         case 4:
         {
+            cout << "Enter Name : " << endl;
+            getline(cin, name);
+
+            while (true)
+            {
+                try
+                {
+                    eco_activity_menu();
+                    cout << "Enter your choice : " << endl;
+                    cin >> type;
+                    cin.ignore();
+
+                    if (cin.fail())
+                    {
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        throw invalid_argument("Invalid Inputs !. Please Enter a number ");
+                    }
+
+                    if (type < 1 || type > 2)
+                    {
+                        throw out_of_range("Invalid Input !. Eco-Activity must be in range of (1-2)");
+                    }
+
+                    break;
+                }
+                catch (const exception &e)
+                {
+                    cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
+                }
+            }
+            
+            simulator.add_eco_activity(name, type);
         }
         break;
         case 5:
