@@ -202,14 +202,80 @@ int main()
                     cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
                 }
             }
-            
+
             simulator.add_eco_activity(name, type);
         }
         break;
         case 5:
         {
+            bool mode;
+
+            cout << "Enter Name of Citizen " << endl;
+            getline(cin, name);
+
+            while (true)
+            {
+                try
+                {
+                    citizen_transport_mode();
+                    cout << "Enter your choice" << endl;
+                    cin >> type;
+
+                    if (cin.fail())
+                    {
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        throw invalid_argument("Invalid Input !. Please Enter a number");
+                    }
+
+                    if (type < 1 || type > 3)
+                    {
+                        throw out_of_range("Invalid Input !. Transport Mode must be in range (1-3)");
+                    }
+
+                    break;
+                }
+
+                catch (const exception &e)
+                {
+                    cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
+                }
+            }
+
+            while (true)
+            {
+                try
+                {
+                    citizen_recycle_menu();
+                    cout << "Enter your choice " << endl;
+                    cin >> mode;
+
+                    if (cin.fail())
+                    {
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        throw invalid_argument("Invalid Input !. Please Enter a number");
+                    }
+
+                    if (type < 1 || type > 3)
+                    {
+                        throw out_of_range("Invalid Input !. Transport Mode must be in range (1-3)");
+                    }
+
+                    break;
+                }
+
+                catch (const exception &e)
+                {
+                    cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
+                }
+            }
+
+            simulator.add_citizen(name, type, mode);
+
+            break;
         }
-        break;
+
         case 6:
         {
         }

@@ -1,0 +1,6 @@
+﻿  bank.cpp
+C:\Users\premier com\source\repos\final project\bank.cpp(73,1): error C2471: cannot update program database 'C:\Users\premier com\source\repos\final project\final project\x64\Debug\vc143.pdb'
+C:\Users\premier com\source\repos\final project\bank.cpp(73,1): error C2471: cannot update program database 'C:\Users\premier com\source\repos\final project\final project\x64\Debug\vc143.idb'
+  Generating Code...
+  Compiling...
+  corruption.cpp
