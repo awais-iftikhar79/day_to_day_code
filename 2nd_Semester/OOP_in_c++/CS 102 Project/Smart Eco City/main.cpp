@@ -208,7 +208,7 @@ int main()
         break;
         case 5:
         {
-            bool mode;
+            bool recycle;
 
             cout << "Enter Name of Citizen " << endl;
             getline(cin, name);
@@ -218,7 +218,7 @@ int main()
                 try
                 {
                     citizen_transport_mode();
-                    cout << "Enter your choice" << endl;
+                    cout << "Enter your choice " << endl;
                     cin >> type;
 
                     if (cin.fail())
@@ -230,12 +230,11 @@ int main()
 
                     if (type < 1 || type > 3)
                     {
-                        throw out_of_range("Invalid Input !. Transport Mode must be in range (1-3)");
+                        throw out_of_range("Invalid Input !. Transport mode must be in range (1-3)");
                     }
 
                     break;
                 }
-
                 catch (const exception &e)
                 {
                     cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
@@ -248,7 +247,7 @@ int main()
                 {
                     citizen_recycle_menu();
                     cout << "Enter your choice " << endl;
-                    cin >> mode;
+                    cin >> recycle;
 
                     if (cin.fail())
                     {
@@ -259,7 +258,7 @@ int main()
 
                     if (type < 1 || type > 3)
                     {
-                        throw out_of_range("Invalid Input !. Transport Mode must be in range (1-3)");
+                        throw out_of_range("Invalid Input !. Recycle mode must be in range (0-1)");
                     }
 
                     break;
@@ -270,23 +269,24 @@ int main()
                     cout << "\033[1;31m  Error : " << e.what() << "\033[0m" << endl;
                 }
             }
-
-            simulator.add_citizen(name, type, mode);
-
-            break;
+            simulator.add_citizen(name, type, recycle);
         }
 
+        break;
         case 6:
         {
+            simulator.show_pollution_report();
         }
         break;
         case 7:
         {
+            simulator.show_eco_points();
         }
         break;
 
         case 8:
         {
+            cout << "Exiting Smart Eco City Simulation Platform" << endl;
             exit(0);
         }
         break;

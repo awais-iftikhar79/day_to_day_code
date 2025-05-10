@@ -1,4 +1,5 @@
-
+#ifndef STRONGHOLD_H
+#define STRONGHOLD_H
 
 #include <string>
 #include <random>
@@ -23,7 +24,8 @@ enum ResourceType
     GOLD,
     RESOURCE_TYPE_COUNT
 };
-enum EventType {
+enum EventType
+{
     PLAGUE,
     FAMINE,
     REBELLION,
@@ -37,7 +39,6 @@ enum EventType {
     EVENT_TYPE_COUNT
 };
 
-
 struct SocialGroup
 {
     SocialClass socialClass;
@@ -47,7 +48,6 @@ struct SocialGroup
 
 class Kingdom;
 
-
 class Corruption
 {
 protected:
@@ -56,14 +56,15 @@ protected:
 public:
     Corruption();
     Corruption(double initialCorruption);
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void increaseCorruption(double amount);
     void decreaseCorruption(double amount);
     double getCorruptionLevel() const;
     bool isCorrupted() const;
 };
 
-class Bank : public Corruption {
+class Bank : public Corruption
+{
 private:
     double loanAmount;
     double interestRate;
@@ -74,7 +75,7 @@ public:
     Bank();
     Bank(double loan, double interest, double balance);
     void setLoanAmount(double a);
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void issueLoan(double a);
     void repayLoan(double a);
     void auditTreasury();
@@ -83,8 +84,8 @@ public:
     void deductGold(double amount);
 };
 
-
-class Economy {
+class Economy
+{
 private:
     double taxRate;
     double inflationRate;
@@ -92,7 +93,7 @@ private:
 
 public:
     Economy();
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void adjustTaxRate(double a);
     void adjustInflation(double a);
     void tradeResources();
@@ -111,8 +112,8 @@ private:
 
 public:
     Event();
-    Event(EventType t, const string& desc, int imp);
-    void update(Kingdom& kingdom);
+    Event(EventType t, const string &desc, int imp);
+    void update(Kingdom &kingdom);
     void triggerEvent();
     EventType getType() const;
     string getDescription() const;
@@ -127,13 +128,12 @@ private:
 
 public:
     EventManager();
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void generateRandomEvent();
     Event getLatestEvent() const;
-    void applyEvent(Event& event);
-    void handleEvent(Kingdom& kingdom, Event& event);
+    void applyEvent(Event &event);
+    void handleEvent(Kingdom &kingdom, Event &event);
 };
-
 
 class Leadership
 {
@@ -144,18 +144,17 @@ private:
 
 public:
     Leadership();
-    Leadership(const string& name);
-    void update(Kingdom& kingdom);
-    void holdElection(Kingdom& kingdom);
-    void initiateCoup(Kingdom& kingdom);
-    void changeLeader(const string& newName, int style);
+    Leadership(const string &name);
+    void update(Kingdom &kingdom);
+    void holdElection(Kingdom &kingdom);
+    void initiateCoup(Kingdom &kingdom);
+    void changeLeader(const string &newName, int style);
     void affectPopularity(double a);
     string getLeaderName() const;
     int getLeadershipStyle() const;
     int getLeadershipLevel() const;
     double getPopularity() const;
 };
-
 
 class Military : public Corruption
 {
@@ -165,9 +164,10 @@ private:
     double foodRequired;
     double payRequired;
     int trainedSoldiers;
+
 public:
     Military();
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void recruitSoldiers();
     void paySoldiers();
     void trainSoldiers(int count);
@@ -175,7 +175,6 @@ public:
     int getSoldierCount() const;
     double getMorale() const;
 };
-
 
 class Population
 {
@@ -187,7 +186,7 @@ private:
 
 public:
     Population();
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void adjustHappiness(SocialClass type, double delta);
     void addPopulation(SocialClass sClass, int count);
     bool removePopulation(SocialClass sClass, int count);
@@ -198,7 +197,6 @@ public:
     void affectHealth(double amount);
 };
 
-
 class Resource
 {
 private:
@@ -208,7 +206,7 @@ private:
 public:
     Resource();
     Resource(ResourceType type, double a);
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void gather(double a);
     void consume(double a);
     void trade(double a);
@@ -224,14 +222,12 @@ private:
 
 public:
     ResourceManager();
-    void update(Kingdom& kingdom);
+    void update(Kingdom &kingdom);
     void gather(ResourceType type, int a);
     void consume(ResourceType type, int a);
     void trade(ResourceType fromType, ResourceType toType, int a);
     int get(ResourceType type) const;
 };
-
-
 
 class Kingdom
 {
@@ -249,12 +245,14 @@ public:
     void update();
     void checkFinancialHealth();
     void handleEvents();
-    Population& getPopulation();
-    Leadership& getLeadership();
-    Economy& getEconomy();
-    Bank& getBank();
-    Military& getMilitary();
-    ResourceManager& getResourceManager();
-    EventManager& getEventManager();
-    Corruption& getCorruption();
+    Population &getPopulation();
+    Leadership &getLeadership();
+    Economy &getEconomy();
+    Bank &getBank();
+    Military &getMilitary();
+    ResourceManager &getResourceManager();
+    EventManager &getEventManager();
+    Corruption &getCorruption();
 };
+
+#endif

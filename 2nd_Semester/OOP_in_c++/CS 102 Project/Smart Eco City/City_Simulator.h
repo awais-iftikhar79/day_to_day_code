@@ -30,6 +30,7 @@ public:
         if (type == 1)
         {
             typ_str = "Residential";
+            eco_points += 10;
         }
         else if (type == 2)
         {
@@ -135,6 +136,10 @@ public:
     void show_eco_points()
     {
         cout << "Current Eco Points : " << eco_points << endl;
+    }
+
+    void show_pollution_report()
+    {
         pollution.report();
     }
 
