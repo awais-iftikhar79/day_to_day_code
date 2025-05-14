@@ -12,9 +12,10 @@ void main_menu()
          << "\t3.Add Utility" << endl
          << "\t4.Perform Eco Activity" << endl
          << "\t5.Add Citizen" << endl
-         << "\t6.View Pollution Report" << endl
-         << "\t7.View Eco Points" << endl
-         << "\t8.Exit \033[0m" << endl; // Bright Cyan
+         << "\t6.Show all City" << endl
+         << "\t7.View Pollution Report" << endl
+         << "\t8.View Eco Points " << endl // Bright Cyan
+         << "\t9.Exit\033[0m" << endl;
 }
 
 int main()
@@ -30,8 +31,8 @@ int main()
             try
             {
                 cout << "\033[1;33m ====== WELCOME TO SMART CITY SIMULATOR ======\033[0m" << endl; // Bright Yellow
+                cout << "\033[0;37mPlease Enter your choice (1-9)\033[0m" << endl;                 // white
                 main_menu();
-                cout << "\033[0;37mPlease Enter your choice (1-8)\033[0m" << endl; // white
                 cin >> choice;
                 cin.ignore();
 
@@ -42,9 +43,9 @@ int main()
                     throw invalid_argument("Invalid Input !. Please Enter a number ");
                 }
 
-                if (choice < 1 || choice > 8)
+                if (choice < 1 || choice > 9)
                 {
-                    throw out_of_range("Invalid Input !. Please Enter number in range (1-8)");
+                    throw out_of_range("Invalid Input !. Please Enter number in range (1-9)");
                 }
                 break;
             }
@@ -275,21 +276,24 @@ int main()
         break;
         case 6:
         {
-            simulator.show_pollution_report();
+            simulator.show_all_city();
         }
         break;
         case 7:
         {
-            simulator.show_eco_points();
+            simulator.show_pollution_report();
         }
         break;
 
         case 8:
         {
-            cout << "Exiting Smart Eco City Simulation Platform" << endl;
-            exit(0);
+            simulator.show_eco_points();
         }
         break;
+        case 9:
+            cout << "Exiting Smart Eco City Simulation Platform" << endl;
+            exit(0);
+            break;
 
         default:
             cout << "Invalide Option.Select (1-8)" << endl;
