@@ -11,12 +11,15 @@
 #include"func.h"
 
 // You need to define your main() function here!
-int main(){
+#include <iostream>
+using namespace std;
 
-    greet();
-    
+int main() {
+    cout << "Hello, world!" << endl;
+    cout << "Greetings from Illinois!" << endl;
     return 0;
 }
+
 
 // Notes:
 
