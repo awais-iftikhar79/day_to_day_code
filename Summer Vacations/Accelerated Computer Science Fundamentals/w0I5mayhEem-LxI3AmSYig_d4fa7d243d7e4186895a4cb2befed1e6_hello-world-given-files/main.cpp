@@ -8,7 +8,7 @@
 **/
 
 // You need to include some header(s) here!
-#include"func.h"
+
 
 // You need to define your main() function here!
 #include <iostream>
