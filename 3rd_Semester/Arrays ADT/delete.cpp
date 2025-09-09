@@ -17,30 +17,30 @@ void display(struct Array *arr)
     cout << endl;
 };
 
-void insert(struct Array *arr, int indx, int value)
+int Delete(struct Array *arr, int indx)
 {
+    int deleted_value, i;
     if (indx >= 0 && indx < arr->length)
     {
-        for (int i = arr->length; i > indx; i--)
+        deleted_value = arr->A[indx];
+        for (i = indx; i < arr->length - 1; i++)
         {
-            arr->A[i] = arr->A[i - 1];
+            arr->A[i] = arr->A[i + 1];
         }
-        arr->A[indx] = value;
-        arr->length++;
     }
+    return deleted_value;
 }
 
 int main()
 {
     Array arr = {{1, 3, 5, 7, 9}, 10, 5};
 
-    int index, num;
-    cout << "Enter number at which u want to put number" << endl;
+    int index;
+    cout << "Enter index at which u want to delete value" << endl;
     cin >> index;
-    cout << "Enter number u want to insert" << endl;
-    cin >> num;
 
-    insert(&arr, index, num);
+    display(&arr);
+    cout << "Deleted Value is : " << Delete(&arr, index) << endl;
     display(&arr);
 
     return 0;
