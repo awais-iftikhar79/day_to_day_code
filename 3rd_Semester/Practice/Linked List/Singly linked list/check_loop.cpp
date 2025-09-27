@@ -1,0 +1,155 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node *next;
+};
+
+class Linked_List
+{
+private:
+    Node *first;
+
+public:
+    Linked_List()
+    {
+        first = nullptr;
+    }
+
+    void insertion(int index, int value)
+    {
+        if (index < 0 || index > count_nodes())
+        {
+            cout << "index is invalid !" << endl;
+            return;
+        }
+        Node *new_node = new Node, *p;
+
+        if (index == 0)
+        {
+            new_node->data = value;
+            new_node->next = first;
+            first = new_node;
+        }
+        else
+        {
+            p = first;
+
+            for (int i = 0; i < index - 1; i++)
+            {
+                p = p->next;
+            }
+
+            new_node->data = value;
+            new_node->next = p->next;
+            p->next = new_node;
+        }
+    }
+
+    void delete_node(int index)
+    {
+        Node *p = first, *q = NULL;
+        if (index < 0 || index > count_nodes())
+        {
+            cout << "Invalid Index !" << endl;
+            return;
+        }
+        if (index == 0)
+        {
+            q = first;
+            first = first->next;
+
+            delete q;
+        }
+        else
+        {
+            for (int i = 0; i < index - 1 && p; i++)
+            {
+                q = p;
+                p = p->next;
+            }
+            if (p)
+            {
+                q->next = p->next;
+                delete p;
+            }
+        }
+    }
+    void made_loop()
+    {
+        if (first == nullptr || first->next == nullptr)
+        {
+            cout << "Forming Loop is Invalid !" << endl;
+            return;
+        }
+
+        Node *p = first, *q = first;
+        int count = 0;
+
+        while (p->next != nullptr && count < 3)
+        {
+            p = p->next;
+            count++;
+        }
+
+        while (q->next != nullptr)
+        {
+            q = q->next;
+        }
+        q->next = p;
+    }
+
+    bool chek_loop()
+    {
+        Node *p, *q;
+        p = q = first;
+
+        do
+        {
+            p = p->next;
+            q = q->next;
+            q = q != nullptr ? q->next : nullptr;
+        } while (p && q && p != q);
+        return p == q ? true : false;
+    }
+
+    int count_nodes() // by using loop
+    {
+        Node *p = first;
+        int lenght = 0;
+
+        while (p)
+        {
+            lenght++;
+            p = p->next;
+        }
+        return lenght;
+    }
+    void display()
+    {
+        Node *p = first;
+        while (p != nullptr)
+        {
+            cout << p->data << " -> ";
+            p = p->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+int main()
+{
+    Linked_List list1;
+    list1.insertion(0, 5);
+    list1.insertion(1, 10);
+    list1.insertion(2, 15);
+    list1.insertion(0, 0);
+
+    list1.made_loop();
+    bool check = list1.chek_loop();
+    cout << "Is loop present ? " << check << endl;
+    // list1.display();
+    return 0;
+}
