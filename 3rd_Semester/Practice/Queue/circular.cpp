@@ -13,16 +13,16 @@ public:
     Queue()
     {
         size = 10;
-        front = -1; // drawback
-        rear = -1; // deleting spaces canot be reused 
+        front = 0;// it reuses all free spaces again and again
+        rear = 0;
         Q = new int[size];
     }
 
     Queue(int size)
     {
         this->size = size;
-        front = -1;
-        rear = -1;
+        front = 0;
+        rear = 0;
         Q = new int[this->size];
     }
 
@@ -34,7 +34,7 @@ public:
 };
 bool Queue::is_full()
 {
-    return (rear == size - 1);
+    return ((rear + 1) % size == front);
 }
 
 bool Queue::is_empty()
@@ -52,7 +52,8 @@ void Queue::enqueue(int value)
     }
     else
     {
-        Q[++rear] = value;
+        rear = (rear + 1) % size;
+        Q[rear] = value;
     }
 }
 int Queue::dequeue()
@@ -66,7 +67,8 @@ int Queue::dequeue()
     }
     else
     {
-        x = Q[++front];
+        front = (front + 1) % size;
+        x = Q[front];
     }
     return x;
 }
@@ -78,10 +80,13 @@ void Queue::display()
         cout << "Queue is empty !" << endl;
         return;
     }
-    for (int i = front + 1; i <= rear; i++)
+    int i = front + 1;
+    do
     {
         cout << Q[i] << " ";
-    }
+        i = (i + 1) % size;
+
+    } while (i != (rear + 1) % size);
     cout << endl;
 }
 
@@ -93,6 +98,8 @@ int main()
     q.enqueue(10);
     q.enqueue(15);
     q.enqueue(20);
+    q.enqueue(25);
+    q.enqueue(30);
 
     q.display();
 
