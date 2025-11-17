@@ -41,6 +41,11 @@ public:
     void display();
     bool is_full();
     bool is_empty();
+
+    ~Queue()
+    {
+        delete[] Q;
+    };
 };
 bool Queue::is_full()
 {
