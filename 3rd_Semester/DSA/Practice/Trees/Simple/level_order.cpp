@@ -1,6 +1,5 @@
 #include <iostream>
-#include "stack.h"
-
+#include "queue.h"
 using namespace std;
 
 class Tree
@@ -10,13 +9,10 @@ private:
 
 public:
     void create_tree();
-    void ipre_order() { ipre_order(root); }
-    void ipre_order(Node *p);
-    void iin_order() { iin_order(root); }
-    void iin_order(Node *p);
-    // void ipost_order() { post_order(root); }  have to write functiion for this remember!!!!
-    // void ipost_order(Node *p);
+    void level_order() { level_order(root); };
+    void level_order(Node *p);
 };
+
 void Tree::create_tree()
 {
     Node *p, *t;
@@ -61,43 +57,24 @@ void Tree::create_tree()
         }
     }
 }
-
-void Tree::ipre_order(Node *p)
+void Tree::level_order(Node *p)
 {
-    Stack st(20);
+    Queue q(20);
+    cout << p->data << " ";
+    q.enqueue(p);
 
-    while (p || !st.is_empty())
+    while (!q.is_empty())
     {
-        if (p)
+        p = q.dequeue();
+        if (p->l_child)
         {
-            cout << p->data << " ";
-            st.push(p);
-            p = (p->l_child);
+            cout << p->l_child->data << " ";
+            q.enqueue(p->l_child);
         }
-        else
+        if (p->r_child)
         {
-            p = st.pop();
-            p = (p->r_child);
-        }
-    }
-}
-
-void Tree::iin_order(Node *p)
-{
-    Stack st(20);
-
-    while (p || !st.is_empty())
-    {
-        if (p)
-        {
-            st.push(p);
-            p = (p->l_child);
-        }
-        else
-        {
-            p = st.pop();
-            cout << p->data << " ";
-            p = (p->r_child);
+            cout << p->r_child->data << " ";
+            q.enqueue(p->r_child);
         }
     }
 }
@@ -105,11 +82,6 @@ int main()
 {
     Tree t;
     t.create_tree();
-    cout << "Pre Order :";
-    t.ipre_order();
-    cout << endl
-         << "In Order :";
-    t.iin_order();
-
+    t.level_order();
     return 0;
 }
