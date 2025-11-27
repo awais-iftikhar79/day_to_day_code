@@ -35,6 +35,8 @@ public:
 
     Node *LL_rotaion(Node *p);
     Node *RR_rotaion(Node *p);
+    Node *LR_rotaion(Node *p);
+    Node *RL_rotaion(Node *p);
 };
 
 int AVL::height(Node *p)
@@ -95,6 +97,50 @@ Node *AVL::RR_rotaion(Node *p)
     return pr;
 }
 
+Node *AVL::LR_rotaion(Node *p)
+{
+    Node *pl = p->l_child;
+    Node *plr = pl->r_child;
+
+    pl->r_child = plr->l_child;
+    p->l_child = plr->r_child;
+
+    plr->r_child = p;
+    plr->l_child = pl;
+
+    p->height = height(p);
+    pl->height = height(pl);
+    plr->height = height(plr);
+
+    if (p == root)
+        root = plr;
+
+    return plr;
+}
+
+Node *AVL::RL_rotaion(Node *p)
+{
+    Node *pr = p->r_child;
+    Node *prl = pr->l_child;
+
+    pr->l_child = prl->r_child;
+    p->r_child = prl->l_child;
+
+    prl->r_child = pr;
+    prl->l_child = p;
+
+    pr->height = height(pr);
+    p->height = height(p);
+    prl->height = height(prl);
+
+    if (root == p)
+    {
+        root = prl;
+    }
+
+    return prl;
+}
+
 Node *AVL::insertion(Node *p, int key)
 {
     Node *new_node;
@@ -120,9 +166,17 @@ Node *AVL::insertion(Node *p, int key)
     {
         return LL_rotaion(p);
     }
-    else if (balancing_fact(p) == -2 && balancing_fact(p->l_child) == -1)
+    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == -1)
     {
         return RR_rotaion(p);
+    }
+    else if (balancing_fact(p) == 2 && balancing_fact(p->l_child) == -1)
+    {
+        return LR_rotaion(p);
+    }
+    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == 1)
+    {
+        return RL_rotaion(p);
     }
 
     return p;
@@ -140,9 +194,16 @@ void AVL::inorder(Node *p)
 int main()
 {
     AVL avl;
-    avl.insertion(10);
-    avl.insertion(20);
+
     avl.insertion(30);
+    avl.insertion(20);
+    avl.insertion(40);
+    avl.insertion(10);
+    avl.insertion(25);
+    avl.insertion(35);
+    avl.insertion(50);
+    avl.insertion(5);
+    avl.insertion(15); // output 5 10 15 20 25 30 35 40 50  (all rorations are used in it)
 
     avl.inorder();
 
