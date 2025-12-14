@@ -1,22 +1,13 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
+// ---------------------- Incident Linked List ----------------------
 struct Incident
 {
     int incident_id;
     string description;
     Incident *next;
-};
-
-struct Location
-{
-    int location_id;
-    int height;
-    Location *l_child;
-    Location *r_child;
-    Incident_List *inc_head;
-
-    Location(int id) { location_id = id, height = 1, l_child = r_child = nullptr, inc_head; }
 };
 
 class Incident_List
@@ -25,354 +16,521 @@ private:
     Incident *head;
 
 public:
-    Incident_List()
-    {
-        head = nullptr;
-    }
+    Incident_List() { head = nullptr; }
 
-    void insert_incident(int id, string dis)
-    {
-        Incident *new_node = new Incident;
-
-        new_node->incident_id = id;
-        new_node->description = dis;
-
-        head = new_node; // updating head
-    }
-
-    void delete_incident(int id)
-    {
-        Incident *current = head;
-        Incident *prev = nullptr;
-
-        if (current != nullptr && current->incident_id == id) // for head
-        {
-            head = current->next;
-            delete current;
-            return;
-        }
-
-        while (current != nullptr && current->incident_id != id)
-        {
-            prev = current;
-            current = current->next;
-        }
-
-        if (current == nullptr)
-        {
-            cout << "Incident not found with ID: " << id << endl; // if not found
-            return;
-        }
-
-        prev->next = current->next; // remove link
-        delete current;
-    }
-
-    void display()
+    ~Incident_List()
     {
         Incident *p = head;
         while (p != nullptr)
         {
-            cout << "ID : " << p->incident_id << endl;
-            cout << "Description : " << p->description << endl;
+            Incident *nxt = p->next;
+            delete p;
+            p = nxt;
+        }
+        head = nullptr;
+    }
+
+    bool insert_incident(int id, const string &dis)
+    {
+        // prevent duplicate incident IDs in the same location
+        Incident *p = head;
+        while (p != nullptr)
+        {
+            if (p->incident_id == id)
+            {
+                cout << "Incident already exists" << endl;
+                return false;
+            }
             p = p->next;
         }
-        cout << "NULL" << endl;
+
+        Incident *new_node = new Incident;
+        new_node->incident_id = id;
+        new_node->description = dis;
+
+        // insert at head
+        new_node->next = head;
+        head = new_node;
+        return true;
+    }
+
+    bool delete_incident(int id)
+    {
+        Incident *current = head;
+        Incident *prev = nullptr;
+
+        while (current != nullptr)
+        {
+            if (current->incident_id == id)
+            {
+                if (prev == nullptr) // deleting head
+                    head = current->next;
+                else
+                    prev->next = current->next;
+
+                delete current;
+                return true;
+            }
+            prev = current;
+            current = current->next;
+        }
+        return false;
+    }
+
+    void display() const
+    {
+        Incident *p = head;
+        if (p == nullptr)
+        {
+            cout << "    (no incidents)\n";
+            return;
+        }
+
+        while (p != nullptr)
+        {
+            cout << "    ID: " << p->incident_id << " | Description: " << p->description << "\n";
+            p = p->next;
+        }
     }
 };
-// Location Tree
+
+// ---------------------- Location (AVL Node) ----------------------
+struct Location
+{
+    int location_id;
+    string area;
+    string city;
+
+    int height;
+    Location *l_child;
+    Location *r_child;
+
+    Incident_List *inc_head; // pointer to linked list object
+
+    Location(int id, const string &a, const string &c)
+    {
+        location_id = id;
+        area = a;
+        city = c;
+
+        height = 1;
+        l_child = nullptr;
+        r_child = nullptr;
+
+        inc_head = new Incident_List();
+    }
+
+    ~Location()
+    {
+        delete inc_head; // frees all incidents too
+        inc_head = nullptr;
+    }
+};
+
+// ---------------------- Location AVL Tree ----------------------
 class Location_Tree
 {
 private:
     Location *root;
 
-public:
-    Location_Tree() { root = nullptr; }
-
-    void insertion(int id)
+    int nodeHeight(Location *p)
     {
-        root = insertion(root, id);
-    }
-    Location *insertion(Location *p, int id);
-    Location *myDelete(Location *p, int id);
-    void myDelete(int id) { root = myDelete(root, id); }
+        if (p == nullptr)
+            return 0;
 
-    void inorder()
-    {
-        inorder(root);
+        int hl = (p->l_child != nullptr) ? p->l_child->height : 0;
+        int hr = (p->r_child != nullptr) ? p->r_child->height : 0;
+
+        return (hl > hr) ? (hl + 1) : (hr + 1);
     }
 
-    Location *in_pre(Location *p);
-    Location *in_succ(Location *p);
-
-    void inorder(Location *p);
-    int height(Location *p);
-    int balancing_fact(Location *p);
-
-    Location *LL_rotaion(Location *p);
-    Location *RR_rotaion(Location *p);
-    Location *LR_rotaion(Location *p);
-    Location *RL_rotaion(Location *p);
-};
-
-int Location_Tree::height(Location *p)
-{
-    int hl, hr;
-
-    hl = (p && p->l_child) ? p->height : 0;
-    hr = (p && p->r_child) ? p->height : 0;
-
-    return (hl > hr) ? hl + 1 : hr + 1;
-}
-
-Location *Location_Tree::in_pre(Location *p)
-{
-    while (p && p->r_child != nullptr)
+    int balanceFactor(Location *p)
     {
-        p = p->r_child;
-    }
-    return p;
-}
+        if (p == nullptr)
+            return 0;
 
-Location *Location_Tree::in_succ(Location *p)
-{
-    while (p && p->l_child != nullptr)
-    {
-        p = p->l_child;
-    }
-    return p;
-}
+        int hl = (p->l_child != nullptr) ? p->l_child->height : 0;
+        int hr = (p->r_child != nullptr) ? p->r_child->height : 0;
 
-int Location_Tree::balancing_fact(Location *p)
-{
-    int hl, hr;
-
-    hl = (p && p->l_child) ? p->height : 0;
-    hr = (p && p->r_child) ? p->height : 0;
-
-    return hl - hr;
-}
-
-Location *Location_Tree::LL_rotaion(Location *p)
-{
-    Location *pl = p->l_child;
-    Location *plr = pl->r_child;
-
-    pl->r_child = p;
-    p->l_child = plr;
-
-    p->height = height(p);
-    pl->height = height(pl);
-
-    if (root == p)
-    {
-        root = pl;
+        return hl - hr;
     }
 
-    return pl;
-}
-
-Location *Location_Tree::RR_rotaion(Location *p)
-{
-    Location *pr = p->r_child;
-    Location *prl = pr->l_child;
-
-    pr->l_child = p;
-    p->r_child = prl;
-
-    p->height = height(p);
-    pr->height = height(pr);
-
-    if (root == p)
+    Location *LL_rotation(Location *p)
     {
-        root = pr;
+        Location *pl = p->l_child;
+        Location *plr = pl->r_child;
+
+        pl->r_child = p;
+        p->l_child = plr;
+
+        p->height = nodeHeight(p);
+        pl->height = nodeHeight(pl);
+
+        return pl;
     }
 
-    return pr;
-}
-
-Location *Location_Tree::LR_rotaion(Location *p)
-{
-    Location *pl = p->l_child;
-    Location *plr = pl->r_child;
-
-    pl->r_child = plr->l_child;
-    p->l_child = plr->r_child;
-
-    plr->r_child = p;
-    plr->l_child = pl;
-
-    p->height = height(p);
-    pl->height = height(pl);
-    plr->height = height(plr);
-
-    if (p == root)
-        root = plr;
-
-    return plr;
-}
-
-Location *Location_Tree::RL_rotaion(Location *p)
-{
-    Location *pr = p->r_child;
-    Location *prl = pr->l_child;
-
-    pr->l_child = prl->r_child;
-    p->r_child = prl->l_child;
-
-    prl->r_child = pr;
-    prl->l_child = p;
-
-    pr->height = height(pr);
-    p->height = height(p);
-    prl->height = height(prl);
-
-    if (root == p)
+    Location *RR_rotation(Location *p)
     {
-        root = prl;
+        Location *pr = p->r_child;
+        Location *prl = pr->l_child;
+
+        pr->l_child = p;
+        p->r_child = prl;
+
+        p->height = nodeHeight(p);
+        pr->height = nodeHeight(pr);
+
+        return pr;
     }
 
-    return prl;
-}
-
-Location *Location_Tree::insertion(Location *p, int id)
-{
-    Location *new_Location;
-
-    if (p == nullptr)
+    Location *LR_rotation(Location *p)
     {
-        new_Location = new Location(id);
-        return new_Location;
+        p->l_child = RR_rotation(p->l_child);
+        return LL_rotation(p);
     }
 
-    if (id < p->location_id)
+    Location *RL_rotation(Location *p)
     {
-        p->l_child = insertion(p->l_child, id);
-    }
-    else if (id > p->location_id)
-    {
-        p->r_child = insertion(p->r_child, id);
+        p->r_child = LL_rotation(p->r_child);
+        return RR_rotation(p);
     }
 
-    p->height = height(p);
+    Location *insertRec(Location *p, int id, const string &area, const string &city)
+    {
+        if (p == nullptr)
+            return new Location(id, area, city);
 
-    if (balancing_fact(p) == 2 && balancing_fact(p->l_child) == 1)
-    {
-        return LL_rotaion(p);
-    }
-    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == -1)
-    {
-        return RR_rotaion(p);
-    }
-    else if (balancing_fact(p) == 2 && balancing_fact(p->l_child) == -1)
-    {
-        return LR_rotaion(p);
-    }
-    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == 1)
-    {
-        return RL_rotaion(p);
-    }
-
-    return p;
-}
-
-Location *Location_Tree::myDelete(Location *p, int id)
-{
-    Location *q;
-    int balance;
-
-    if (p == nullptr)
-    {
-        return nullptr;
-    }
-
-    if (id > p->data)
-    {
-        p->r_child = myDelete(p->r_child, id);
-    }
-
-    else if (id < p->data)
-    {
-        p->l_child = myDelete(p->l_child, id);
-    }
-
-    else
-    {
-        if (p->l_child == nullptr && p->r_child == nullptr)
+        if (id < p->location_id)
+            p->l_child = insertRec(p->l_child, id, area, city);
+        else if (id > p->location_id)
+            p->r_child = insertRec(p->r_child, id, area, city);
+        else
         {
-            delete p;
+            cout << "Error: Location ID already exists.\n";
+            return p;
+        }
+
+        p->height = nodeHeight(p);
+
+        // Balance
+        if (balanceFactor(p) == 2 && balanceFactor(p->l_child) >= 0)
+            return LL_rotation(p);
+        if (balanceFactor(p) == 2 && balanceFactor(p->l_child) < 0)
+            return LR_rotation(p);
+        if (balanceFactor(p) == -2 && balanceFactor(p->r_child) <= 0)
+            return RR_rotation(p);
+        if (balanceFactor(p) == -2 && balanceFactor(p->r_child) > 0)
+            return RL_rotation(p);
+
+        return p;
+    }
+
+    Location *in_succ(Location *p)
+    {
+        while (p && p->l_child != nullptr)
+            p = p->l_child;
+        return p;
+    }
+
+    Location *in_pre(Location *p)
+    {
+        while (p && p->r_child != nullptr)
+        {
+            p = p->r_child;
+        }
+        return p;
+    }
+
+    Location *deleteRec(Location *p, int id, bool &removed)
+    {
+        Location *q;
+        int balance;
+
+        if (p == nullptr)
+        {
             return nullptr;
         }
 
-        else if (p->l_child != nullptr && p->r_child == nullptr)
+        if (id > p->location_id)
         {
-            Location *temp = p->l_child;
-            delete p;
-            return temp;
+            p->r_child = deleteRec(p->r_child, id, removed);
         }
-
-        else if (p->l_child == nullptr && p->r_child != nullptr)
+        else if (id < p->location_id)
         {
-            Location *temp = p->r_child;
-            delete p;
-            return temp;
+            p->l_child = deleteRec(p->l_child, id, removed);
         }
-
         else
         {
-            if (height(p->l_child) > height(p->r_child))
+            removed = true;
+
+            // 0 child
+            if (p->l_child == nullptr && p->r_child == nullptr)
             {
-                q = in_pre(p->l_child);
-                p->data = q->data;
-                p->l_child = myDelete(p->l_child, q->data);
+                delete p; // destructor deletes incidents
+                return nullptr;
             }
 
+            // 1 child (left)
+            else if (p->l_child != nullptr && p->r_child == nullptr)
+            {
+                Location *temp = p->l_child;
+                delete p; // destructor deletes incidents
+                return temp;
+            }
+
+            // 1 child (right)
+            else if (p->l_child == nullptr && p->r_child != nullptr)
+            {
+                Location *temp = p->r_child;
+                delete p; // destructor deletes incidents
+                return temp;
+            }
+
+            // 2 children
             else
             {
-                q = in_succ(p->r_child);
-                p->data = q->data;
-                p->r_child = myDelete(p->r_child, q->data);
+                if (nodeHeight(p->l_child) > nodeHeight(p->r_child))
+                {
+                    // use inorder predecessor
+                    q = in_pre(p->l_child);
+
+                    // delete incidents of the location being removed (current node)
+                    // (assumes deleting inc_head frees the whole list)
+                    delete p->inc_head;
+                    p->inc_head = nullptr;
+
+                    // copy predecessor data into current node
+                    p->location_id = q->location_id;
+                    p->inc_head = q->inc_head;
+
+                    // detach so q destructor won't delete moved incidents
+                    q->inc_head = nullptr;
+
+                    // delete predecessor node from left subtree
+                    p->l_child = deleteRec(p->l_child, q->location_id, removed);
+                }
+                else
+                {
+                    // use inorder successor
+                    q = in_succ(p->r_child);
+
+                    delete p->inc_head;
+                    p->inc_head = nullptr;
+
+                    p->location_id = q->location_id;
+                    p->inc_head = q->inc_head;
+
+                    q->inc_head = nullptr;
+
+                    p->r_child = deleteRec(p->r_child, q->location_id, removed);
+                }
             }
+        }
+
+        if (p == nullptr)
+        {
+            return nullptr;
+        }
+
+        p->height = nodeHeight(p);
+
+        if (balanceFactor(p) == 2 && balanceFactor(p->l_child) >= 0)
+        {
+            return LL_rotation(p);
+        }
+        else if (balanceFactor(p) == -2 && balanceFactor(p->r_child) <= 0)
+        {
+            return RR_rotation(p);
+        }
+        else if (balanceFactor(p) == 2 && balanceFactor(p->l_child) < 0)
+        {
+            return LR_rotation(p);
+        }
+        else if (balanceFactor(p) == -2 && balanceFactor(p->r_child) > 0)
+        {
+            return RL_rotation(p);
+        }
+
+        return p;
+    }
+
+    void inorderRec(Location *p) const
+    {
+        if (p != nullptr)
+        {
+            inorderRec(p->l_child);
+
+            cout << "Location ID: " << p->location_id
+                 << " | Area: " << (p->area.empty() ? "-" : p->area)
+                 << " | City: " << (p->city.empty() ? "-" : p->city)
+                 << " | Height: " << p->height << "\n";
+            p->inc_head->display();
+
+            inorderRec(p->r_child);
         }
     }
 
-    p->height = height(p);
-    balance = balancing_fact(p);
-
-    if (balancing_fact(p) == 2 && balancing_fact(p->l_child) == 1)
+    Location *searchRec(Location *p, int id) const
     {
-        return LL_rotaion(p);
-    }
-    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == -1)
-    {
-        return RR_rotaion(p);
-    }
-    else if (balancing_fact(p) == 2 && balancing_fact(p->l_child) == -1)
-    {
-        return LR_rotaion(p);
-    }
-    else if (balancing_fact(p) == -2 && balancing_fact(p->r_child) == 1)
-    {
-        return RL_rotaion(p);
+        while (p != nullptr)
+        {
+            if (id < p->location_id)
+                p = p->l_child;
+            else if (id > p->location_id)
+                p = p->r_child;
+            else
+                return p;
+        }
+        return nullptr;
     }
 
-    return p;
-}
+    void destroy(Location *p)
+    {
+        if (p == nullptr)
+            return;
+        destroy(p->l_child);
+        destroy(p->r_child);
+        delete p;
+    }
 
-void Location_Tree::inorder(Location *p)
+public:
+    Location_Tree() { root = nullptr; }
+
+    ~Location_Tree() { destroy(root); }
+
+    void insert_location(int id, const string &area, const string &city)
+    {
+        root = insertRec(root, id, area, city);
+    }
+
+    void delete_location(int id)
+    {
+        bool removed = false;
+        root = deleteRec(root, id, removed);
+        if (removed)
+            cout << "Location removed (and all its incidents).\n";
+        else
+            cout << "Location not found.\n";
+    }
+
+    void add_incident(int location_id, int incident_id, const string &desc)
+    {
+        Location *loc = searchRec(root, location_id);
+        if (loc == nullptr)
+        {
+            cout << "Error: Location not found. Add the location first.\n";
+            return;
+        }
+
+        if (loc->inc_head->insert_incident(incident_id, desc))
+            cout << "Incident added.\n";
+        else
+            cout << "Error: Incident ID already exists for this location.\n";
+    }
+
+    void remove_incident(int location_id, int incident_id)
+    {
+        Location *loc = searchRec(root, location_id);
+        if (loc == nullptr)
+        {
+            cout << "Location not found.\n";
+            return;
+        }
+
+        if (loc->inc_head->delete_incident(incident_id))
+            cout << "Incident deleted.\n";
+        else
+            cout << "Incident not found.\n";
+    }
+
+    void display_inorder() const
+    {
+        cout << "\n--- ERMS (In-order AVL Traversal) ---\n";
+        inorderRec(root);
+        cout << "------------------------------------\n";
+    }
+};
+
+void menu()
 {
-    if (p)
-    {
-        inorder(p->l_child);
-        cout << p->data << " ";
-        inorder(p->r_child);
-    }
+    cout << "\n1) Add location\n";
+    cout << "2) Remove location\n";
+    cout << "3) Add incident\n";
+    cout << "4) Delete incident\n";
+    cout << "5) Display all (in-order)\n";
+    cout << "0) Exit\n";
+    cout << "Choose: ";
 }
+// ---------------------- Main (simple menu) ----------------------
 int main()
 {
-    // Incident_List test;
-    // test.insert_incident(1001, "Fire");
-    // test.display();
-    // test.delete_incident(1001);
+    Location_Tree t;
+
+    int choice;
+    while (true)
+    {
+        menu();
+        cin >> choice;
+
+        if (choice == 0)
+            break;
+
+        if (choice == 1)
+        {
+            int id;
+            cout << "Enter location ID: ";
+            cin >> id;
+
+            cin.ignore(); // clear newline before getline
+            string area, city;
+            cout << "Enter area: ";
+            getline(cin, area);
+            cout << "Enter city: ";
+            getline(cin, city);
+
+            t.insert_location(id, area, city);
+        }
+        else if (choice == 2)
+        {
+            int id;
+            cout << "Enter location ID to remove: ";
+            cin >> id;
+            t.delete_location(id);
+        }
+        else if (choice == 3)
+        {
+            int loc, inc;
+            cout << "Enter location ID: ";
+            cin >> loc;
+            cout << "Enter incident ID: ";
+            cin >> inc;
+
+            cin.ignore(); // clear newline before getline
+            string desc;
+            cout << "Enter description: ";
+            getline(cin, desc);
+
+            t.add_incident(loc, inc, desc);
+        }
+        else if (choice == 4)
+        {
+            int loc, inc;
+            cout << "Enter location ID: ";
+            cin >> loc;
+            cout << "Enter incident ID to delete: ";
+            cin >> inc;
+
+            t.remove_incident(loc, inc);
+        }
+        else if (choice == 5)
+        {
+            t.display_inorder();
+        }
+        else
+        {
+            cout << "Invalid choice.\n";
+        }
+    }
+
     return 0;
 }
