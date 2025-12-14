@@ -47,6 +47,7 @@ void count_sort(int A[], int size)
         }
     }
 }
+
 void display(int A[], int size)
 {
     for (int i = 0; i < size; i++)
@@ -55,10 +56,13 @@ void display(int A[], int size)
     }
     cout << endl;
 }
+
 int main()
 {
     int A[] = {3, 2, 8, 5, 2, 1, 5, 4, 2};
+
     count_sort(A, 9);
     display(A, 9);
+
     return 0;
 }
