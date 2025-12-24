@@ -92,6 +92,44 @@ public:
         V--;
     }
 
+    // Count Isolated Nodes (degree = 0)
+    int countIsolatedNodes()
+    {
+        int count = 0;
+        for (int i = 0; i < V; i++)
+        {
+            if (adj[i].empty())
+                count++;
+        }
+        return count;
+    }
+
+    // Count Self Loops (u -> u)
+    int countSelfLoops()
+    {
+        int count = 0;
+        for (int i = 0; i < V; i++)
+        {
+            for (int v : adj[i])
+            {
+                if (v == i)
+                    count++;
+            }
+        }
+        return count;
+    }
+
+    // Check if Graph is Complete (every vertex connected to all others)
+    bool isCompleteGraph()
+    {
+        for (int i = 0; i < V; i++)
+        {
+            if ((int)adj[i].size() != V - 1)
+                return false;
+        }
+        return true;
+    }
+
     // Display the graph
     void display()
     {
